@@ -21,7 +21,23 @@ VERIFY_TOKEN = '8447789934m'
 PAGE_ACCESS_TOKEN = 'EAAaAgaQuGQQBAG769gvYxw10eN0frRZCxT74HoLiJUlYQVbG01JDomloZC5VaCiLUWcGUNWZAFHl5a58Ppan4nZBEAzbFDBC63e48Vf7BXZA4f4P7WZCJo9oCuFy4dZBAJvQPo7ZBjstp9NDdsxOjReXjOagxE0Mt5fTMKZBUTS6QvAZDZD'
 
 
-def save_message(fbid='1160786967320970',message_text='hi'):
+def domain_whitelist(domain='https://codingblock.herokuapp.com'):
+    post_message_url = "https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s"%(PAGE_ACCESS_TOKEN)
+    response_object =     {
+                "setting_type" : "domain_whitelisting",
+                "whitelisted_domains" : [domain],
+                "domain_action_type": "add"
+              }
+    response_msg = json.dumps(response_object)
+
+    status = requests.post(post_message_url, 
+                headers={"Content-Type": "application/json"},
+                data=response_msg)
+
+    logg(status.text,symbol='--WHT--')              
+
+
+def save_message(fbid='1160786967320970',message_text='hi'):  
     url = 'https://graph.facebook.com/v2.6/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s'%(fbid,PAGE_ACCESS_TOKEN)
     print url
     resp = requests.get(url=url)
@@ -81,6 +97,7 @@ def set_greeting_text():
 
 def index(request):
     #set_menu()
+    domain_whitelist()
     handle_postback('fbid','MENU_CALL')
     post_facebook_message('1160786967320970','asdasd')
     search_string = request.GET.get('text') or 'foo'
@@ -200,7 +217,33 @@ def handle_postback(fbid,payload):
     elif payload == 'MENU_TEACHER':
         return post_facebook_message(fbid,'teacher')
     elif payload == 'MENU_WHY':
-        return post_facebook_message(fbid,'why')
+        response_object = {
+                        "recipient":{
+                          "id":fbid
+                        },
+                        "message":{
+                          "attachment":{
+                            "type":"template",
+                            "payload":{
+                              "template_type":"button",
+                              "text":"What do you want to do next?",
+                              "buttons":[
+                                  {
+                                                  "type":"web_url",
+                                                  "url":"http://codingblocks.herokuapp.com/login",
+                                                  "title":"Select Criteria",
+                                                  "webview_height_ratio": "compact"
+                                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+        response_msg = json.dumps(response_object)
+        requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
+        
+
+
     elif payload == "MENU_HELP":
         output_text = 'Welcome to CodingBlocks chatbot, you can se this chatbot to ...'
         response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":output_text}})
