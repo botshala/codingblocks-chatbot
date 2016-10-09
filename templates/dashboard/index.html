@@ -39,8 +39,9 @@
 	    <div role="tabpanel" class="tab-pane" id="messages">
 
 	    	{% for message in data %}
-	    	
+
 	    		<div class="row">
+	    		  
 	    		  <div class="col-md-4">
 	    		  	<img src="{{message.profile_url}}" width='100px'>
 	    		  </div>
@@ -51,6 +52,7 @@
 	    		  	  <small>{{message.locale}} | {{message.gender}}</small>
 	    		  	</address>
 	    		  </div>
+	    		
 	    		</div>
 
 	    		<hr>

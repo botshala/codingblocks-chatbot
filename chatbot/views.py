@@ -21,7 +21,7 @@ VERIFY_TOKEN = '8447789934m'
 PAGE_ACCESS_TOKEN = 'EAAaAgaQuGQQBAG769gvYxw10eN0frRZCxT74HoLiJUlYQVbG01JDomloZC5VaCiLUWcGUNWZAFHl5a58Ppan4nZBEAzbFDBC63e48Vf7BXZA4f4P7WZCJo9oCuFy4dZBAJvQPo7ZBjstp9NDdsxOjReXjOagxE0Mt5fTMKZBUTS6QvAZDZD'
 
 
-def save_message(fbid='1160786967320970'):
+def save_message(fbid='1160786967320970',message_text='hi'):
     url = 'https://graph.facebook.com/v2.6/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s'%(fbid,PAGE_ACCESS_TOKEN)
     print url
     resp = requests.get(url=url)
@@ -32,7 +32,8 @@ def save_message(fbid='1160786967320970'):
       profile_url = data['profile_pic'],
       fb_id = fbid,
       gender = data['gender'],
-      locale = data['locale']
+      locale = data['locale'],
+      message = message_text
       )[0]
     p.save()
 
@@ -176,7 +177,7 @@ def post_facebook_message(fbid,message_text):
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
     message_text = message_text.lower()
 
-    save_message(fbid)
+    save_message(fbid,message_text)
 
     if message_text in 'teacher,why,course'.split(','):
         response_msg = gen_response_object(fbid,item_type=message_text)
