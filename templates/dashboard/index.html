@@ -1,5 +1,8 @@
 {% extends "dashboard/base.html" %}
 
+{% load my_tags %}
+
+
 {% block head %}
 	
 	<style type="text/css">
@@ -8,6 +11,9 @@
 			height: 100%;
 			min-height: 600px;
 		}
+		body{
+			//background-color: {% random_colour %} !important;
+		}	
 	</style>
 
 {% endblock head %}
@@ -18,20 +24,29 @@
 
 <div class='row'>
 
+
 	<div class="col-md-8 col-md-offset-2">
 
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs" role="tablist">
-	    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">DataSheet</a></li>
-	    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-	    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-	    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+	   	 	<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">DataSheet</a></li>
+	    	<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+	    	<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+	    	<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
 	  </ul>
 
 	  <!-- Tab panes -->
 	  <div class="tab-content">
 	    <div role="tabpanel" class="tab-pane active" id="home">
-	    	
+
+	    	{{ 'HELLOOOOO' | lower }}
+	    	<br>
+	    	{% concat 'HI' 'Hi' 'Yo' as result %}
+	    	<br>
+	    	{% current_time '%j day of the year %Y' %}
+	    	<br>
+	    	{{ result }}
+
 	    	<!-- <iframe src="https://docs.google.com/spreadsheets/d/1EXwvmdQV4WaMXtL4Ucn3kwwhS1GOMFu0Nh9ByVCfrxk/edit#gid=0"></iframe>
  -->
 	    </div>
